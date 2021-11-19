@@ -1,7 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 // import { makeStyles } from '@mui/styles';
-import Home from './pages/home';
-
+import Routes from './routes';
 // const useStyles = makeStyles({
 //   root: {
 //     background: 'purple',
@@ -13,8 +12,9 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#bbdefb',
-        dark: '#1976d2'
+        light: '#bbdefb',
+        main: '#1976d2'
+        
       },
       secondary: {
         main: '#424242',
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <Routes/>
     </ThemeProvider>
 
   );

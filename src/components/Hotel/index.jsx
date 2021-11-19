@@ -21,7 +21,7 @@ export default function Hotel({ title, img, location, price, persons, rooms }) {
 
   return (
     <>
-      <Card sx={{ maxWidth: 400, minWidth: 400 }}>
+      <Card sx={{ maxWidth: 350, minWidth: 350  }}>
         <CardActionArea>
           <CardMedia
             component="img"

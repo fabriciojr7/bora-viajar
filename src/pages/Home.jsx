@@ -4,13 +4,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Hotel from '../components/Hotel'
 import { Toolbar, Box } from '@mui/material';
-//import FiltroHotel from "../components/FiltroHotel";
 
 import api from "../services/api";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: theme.palette.primary.main,
+        background: theme.palette.primary.light,
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
@@ -31,12 +30,6 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         gap: '20px',
     },
-    filtros: {
-        marginTop: '0.8rem',
-        border: '0.1px solid',
-        borderRadius: '10px',
-        backgroundColor: 'white'
-    }
 }))
 
 export default function Home() {
@@ -44,7 +37,6 @@ export default function Home() {
     const classes = useStyles()
 
     const [hoteis, sethoteis] = useState([])
-    //const [cidade, setCidade]
 
     useEffect(() => {
         api.get('/temporada').then(({ data }) => {
@@ -59,12 +51,6 @@ export default function Home() {
             <Header />
 
             <Toolbar />
-            {/* <Box className={classes.filtros}>
-                <FiltroHotel />
-            </Box> */}
-
-
-
             <Box className={classes.main}>
                 {hoteis?.map((hotel, index) => (
                     <Hotel
