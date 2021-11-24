@@ -49,8 +49,6 @@ export default function Home() {
     return (
         <div className={classes.root}>
             <Header />
-
-            <Toolbar />
             <Box className={classes.main}>
                 {hoteis?.map((hotel, index) => (
                     <Hotel
@@ -61,6 +59,7 @@ export default function Home() {
                         price={hotel.price}
                         persons={hotel.persons}
                         rooms={hotel.rooms}
+                        origin={hotel.origin}
                     />
                 ))}
             </Box>

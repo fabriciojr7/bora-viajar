@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography, Link } from '@mui/material';
 
 import { makeStyles } from '@mui/styles';
 import MenuItem from '@mui/material/MenuItem';
@@ -45,19 +45,17 @@ export default function Header() {
     }
 
     return (
-        <AppBar color='secondary' >
+        <AppBar color='secondary' sx={{ position: 'relative' }}>
             <Toolbar>
                 <Typography variant="h4" >
-
-                    Bora Viajar
-
+                    <Link href="/" color="inherit" underline="none">
+                        Bora Viajar
+                    </Link>
                 </Typography>
                 <div className={classes.grow} />
-
                 <Typography className={classes.saldo} variant="h6" >
                     Saldo: R$ 100,00
                 </Typography>
-
                 <IconButton
                     size="large"
                     aria-label="account of current user"
@@ -84,10 +82,9 @@ export default function Header() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClose}>
-                    
+                        {/* <Link href="/perfil" color="inherit" underline="none"> */}
                             Informações da conta
-               
-
+                        {/* </Link> */}
                     </MenuItem>
                     <MenuItem onClick={logout}>Sair</MenuItem>
                 </Menu>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Card,
@@ -9,7 +9,17 @@ import {
 } from '@mui/material';
 import { MdGroup, MdBedroomChild, MdLocalOffer } from "react-icons/md";
 
-export default function Hotel({ title, img, location, price, persons, rooms }) {
+import HotelDetail from '../HotelDetail';
+
+import api from '../../services/api';
+
+export default function Hotel({ title, img, location, price, persons, rooms, origin }) {
+  const [dialogOpened, setDialogOpened] = useState(false)
+
+  function handleDialog() {
+    setDialogOpened((prevState) => !prevState)
+  }
+
   const definePrice = () => {
     if (price === '') return 'Consulte a diária'
     return (
@@ -19,10 +29,22 @@ export default function Hotel({ title, img, location, price, persons, rooms }) {
     )
   }
 
+  const [detail, setDetail] = useState([])
+
+  useEffect(() => {
+    api.get(`/temporada/buscar?origin=${origin}`).then(({ data }) => {
+      setDetail(data.data)
+    })
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
   return (
     <>
-      <Card sx={{ maxWidth: 350, minWidth: 350  }}>
-        <CardActionArea>
+      <Card sx={{ maxWidth: 350, minWidth: 350 }}>
+        <CardActionArea
+          onClick={handleDialog}
+        >
           <CardMedia
             component="img"
             height="210"
@@ -46,6 +68,23 @@ export default function Hotel({ title, img, location, price, persons, rooms }) {
           </CardContent>
         </CardActionArea>
       </Card>
+
+
+
+      <HotelDetail
+        open={dialogOpened}
+        onClose={handleDialog}
+        title={detail.title}
+        persons={detail.number_of_persons}
+        rooms={detail.number_of_rooms}
+        couple_beds={detail.number_of_couple_beds}
+        single_beds={detail.number_of_single_beds}
+        subtitle={detail.subtitle}
+        description={detail.description}
+        images={detail.imgs}
+        features={detail.features}
+        price={price}
+      />
     </>
   );
 }

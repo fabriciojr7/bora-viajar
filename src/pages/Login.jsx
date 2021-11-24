@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         backgroundColor: 'white',
-        border: '1px solid',
+        border: '1px',
         borderRadius: '15px',
-        padding: '25px'
-
+        padding: '25px',
+        boxShadow: '0 0 1em black'
+        
     }
 }))
 
@@ -69,10 +70,9 @@ export default function Login() {
                     <Box component="form" noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
-                            required
                             fullWidth
                             id="email"
-                            placeholder='Informe seu email'
+                            label="Informe seu email"
                             onChange={(e) => { setEmail(e.target.value) }}
                             name="email"
                             autoComplete="email"
@@ -81,10 +81,9 @@ export default function Login() {
                         />
                         <TextField
                             margin="normal"
-                            required
                             fullWidth
                             name="password"
-                            placeholder="Informe sua senha"
+                            label="Informe sua senha"
                             type="password"
                             id="password"
                             autoComplete="current-password"

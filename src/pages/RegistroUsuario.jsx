@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         backgroundColor: 'white',
-        border: '1px solid',
+        border: '1px',
         borderRadius: '15px',
-        padding: '25px'
+        padding: '25px',
+        boxShadow: '0 0 1em black'
     }
 }))
 
@@ -66,6 +67,28 @@ export default function SignUp() {
                     </Typography>
                     <Box component="form" noValidate sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="given-name"
+                                    name="nome"
+                                    required
+                                    fullWidth
+                                    id="nome"
+                                    label="Nome"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="sobreNome"
+                                    label="Sobre Nome"
+                                    name="sobreNome"
+                                    autoComplete="family-name"
+                                />
+                            </Grid>
+
                             <Grid item xs={12}>
                                 <TextField
                                     required
