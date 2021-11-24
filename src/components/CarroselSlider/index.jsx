@@ -74,7 +74,7 @@ export default function CarrosselSlider({ images }) {
     <div className={classes.carousel}>
       <div
         className={classes.carouselInner}
-        style={{ backgroundImage: `url(${images[indexImage]})` }}
+        style={{ backgroundImage: `url(${images && images[indexImage]})` }}
       >
         <div className={classes.left}
           onClick={() => {
