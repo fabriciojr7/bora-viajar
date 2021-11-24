@@ -86,7 +86,7 @@ export default function CarrosselSlider({ images }) {
 
         <div className={classes.center} >
           <Typography className={classes.numerador} variant='p' component='span'>
-            {indexImage + 1}/{images.length}
+            {indexImage + 1}/{images && images.length}
           </Typography>
         </div>
 
