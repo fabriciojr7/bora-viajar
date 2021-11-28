@@ -38,7 +38,7 @@ export default function Home() {
     const classes = useStyles()
     const [hoteis, sethoteis] = useState([])
     const [user, setUser] = useState([])
-
+    const formatarReal = (valor) =>  valor ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
 
     useEffect(() => {
         getDocs(collection(db, 'clientes'))
@@ -47,11 +47,13 @@ export default function Home() {
                 snapshot.forEach((snap) => {
                     dados.push(snap.data())
                 })
-                dados = dados.filter((dado) => dado.email === localStorage.getItem('email'))[0]
-                setUser(dados)
+
+                const email = localStorage.getItem('email')
+                const userData = dados.find(user => user.email === email)
+                setUser(userData)
             })
             .catch((error) => {
-                console.log(error)
+                alert('Erro ao buscar dados do usuário')
             })
 
 
@@ -59,18 +61,17 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        console.log(user)
-        api.get(`/carteira/recomendacao?balance=${user.saldo}`).then(({ data }) => {
-            console.log(data.data)
-            if (Object.keys(data).includes('data')) {
+        if (user && user.saldo !== undefined && user.saldo !== null) {
+            api.get(`/carteira/recomendacao?balance=${user.saldo}`).then(({ data }) => {
                 sethoteis(data.data)
-            }
-
-        })
+            }).catch((error) => {
+                alert('Erro ao buscar hoteis')
+            })
+        }       
     }, [user]);
     return (
         <div className={classes.root}>
-            <Header saldo={user.saldo} />
+            <Header saldo={formatarReal(user?.saldo)} />
 
             <Box className={classes.main}>
 

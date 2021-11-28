@@ -54,7 +54,7 @@ export default function Header({saldo}) {
                 </Typography>
                 <div className={classes.grow} />
                 <Typography className={classes.saldo} variant="h6" >
-                    Saldo: R$ {saldo}
+                    Saldo: {saldo}
                 </Typography>
                 <IconButton
                     size="large"
