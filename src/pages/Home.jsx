@@ -6,6 +6,8 @@ import Hotel from '../components/Hotel'
 import { Toolbar, Box } from '@mui/material';
 
 import api from "../services/api";
+import { db } from '../services/firebase'
+import { collection, getDocs } from "@firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,24 +35,46 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Home() {
-
     const classes = useStyles()
-
     const [hoteis, sethoteis] = useState([])
+    const [user, setUser] = useState([])
+
 
     useEffect(() => {
-        api.get('/temporada').then(({ data }) => {
-            sethoteis(data.data)
-        })
-        //eslint-disable-next-line react-hooks/exhaustive-deps
+        getDocs(collection(db, 'clientes'))
+            .then((snapshot) => {
+                let dados = []
+                snapshot.forEach((snap) => {
+                    dados.push(snap.data())
+                })
+                dados = dados.filter((dado) => dado.email === localStorage.getItem('email'))[0]
+                setUser(dados)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps        
     }, []);
 
+    useEffect(() => {
+        console.log(user)
+        api.get(`/carteira/recomendacao?balance=${user.saldo}`).then(({ data }) => {
+            console.log(data.data)
+            if (Object.keys(data).includes('data')) {
+                sethoteis(data.data)
+            }
 
+        })
+    }, [user]);
     return (
         <div className={classes.root}>
-            <Header />
+            <Header saldo={user.saldo} />
+
             <Box className={classes.main}>
-                {hoteis?.map((hotel, index) => (
+
+                {typeof hoteis === 'object' && hoteis.map((hotel, index) => (
                     <Hotel
                         key={index}
                         title={hotel.title}

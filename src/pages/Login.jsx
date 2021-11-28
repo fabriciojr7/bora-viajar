@@ -14,7 +14,6 @@ import {
     signInWithEmailAndPassword as signIn
 } from 'firebase/auth'
 import { auth } from '../services/firebase'
-
 const urlCapa = '../images/capa-login.jpg'
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,13 +45,15 @@ export default function Login() {
         signIn(auth, email, pass)
             .then((userCredential) => {
                 const user = userCredential.user;
-                console.log(user)
+                localStorage.setItem('email', user.email)
+              
+                
             })
-            .catch((error) => {
-                console.log(error.message)
+            .catch((error) => {             
+                alert(error.message)
             })
     }
-
+    
     return (
         <Box className={classes.root}>
             <Container className={classes.box} maxWidth="xs">

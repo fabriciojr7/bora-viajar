@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
-  //  Toolbar,
     Box,
     Container,
     CssBaseline,
     TextField,
     Grid,
-    //Typography,
+    Typography,
     Button,
     Select,
     MenuItem,
     FormControl,
-    InputLabel
+    InputLabel,
+    Divider
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.primary.light,
-        minHeight: '100vh',
+        minHeight: '88vh',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -27,16 +27,23 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         backgroundColor: 'white',
-        border: '1px solid',
+        border: '1px',
         borderRadius: '15px',
-        padding: '25px'
-
+        padding: '25px',
+        boxShadow: '0 0 1em black'
+    },
+    divisao: {
+        padding: '20px',
+    },
+    titleTransacao: {
+        textAlign: 'center',
+        padding: '20px'
     }
 }))
 
 export default function AccountUser() {
     const classes = useStyles()
-    const [tipo, setTipo] = useState('Depósito');
+    const [tipo, setTipo] = useState(1);
 
     const handleChange = (event) => {
         setTipo(event.target.value);
@@ -64,7 +71,6 @@ export default function AccountUser() {
                                     <TextField
                                         autoComplete="given-name"
                                         name="nome"
-                                        required
                                         fullWidth
                                         id="nome"
                                         label="Nome"
@@ -73,39 +79,16 @@ export default function AccountUser() {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
                                         fullWidth
                                         id="sobreNome"
-                                        label="Sobre Nome"
+                                        label="Sobrenome"
                                         name="sobreNome"
-                                        autoComplete="family-name"
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="cpf"
-                                        required
-                                        fullWidth
-                                        id="cpd"
-                                        label="CPF"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="data_nasc"
-                                        label="Data de Nascimento"
-                                        name="data_nasc"
                                         autoComplete="family-name"
                                     />
                                 </Grid>
 
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         fullWidth
                                         id="email"
                                         label="Email"
@@ -114,49 +97,44 @@ export default function AccountUser() {
                                     //onChange={(e) => { setEmail(e.target.value) }}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
+                            </Grid>
+
+                            <Divider className={classes.divisao} />
+
+                            <Typography className={classes.titleTransacao}>
+                                Realizar Transação
+                            </Typography>
+
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={5}>
+                                    <FormControl sx={{ m: 1, minWidth: 150 }}>
+                                        <InputLabel id="tipo">Tipo</InputLabel>
+                                        <Select
+                                            labelId="tipo-label"
+                                            id="tipo"
+                                            value={tipo}
+                                            label='Tipo'
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value={1}>Depósito</MenuItem>
+                                            <MenuItem value={2}>Retirada</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={7}>
+                                    <Button
+                                        type="submit"
                                         fullWidth
-                                        name="password"
-                                        label="Senha"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password"
-                                    //onChange={(e) => { setPass(e.target.value) }}
-                                    />
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                    // onClick={registro}
+                                    >
+                                        Adicionar Transação
+                                    </Button>
                                 </Grid>
 
                             </Grid>
-                            <Grid item xs={12} sm={7}>
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
-                                // onClick={registro}
-                                >
-                                    Adicionar Transação
-                                </Button>
-                            </Grid>
-                            <Grid item xs={12} sm={5}>
-                                <InputLabel id="tipo">Tipo</InputLabel>
-                                <FormControl sx={{ minWidth: 120 }}>
-                                    <Select
-                                        labelId="tipo-label"
-                                        id="tipo"
-                                        value={tipo}
-                                        label='Tipo'
-                                        onChange={handleChange}
-                                    >
-                                 
-                                        <MenuItem value={10}>Depósito</MenuItem>
-                                        <MenuItem value={20}>Retirada</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-
 
 
                         </Box>

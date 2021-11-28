@@ -3,7 +3,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import RegistroUsuario from "./pages/RegistroUsuario";
-// import AccountUser from "./pages/AccountUser";
+//  import AccountUser from "./pages/AccountUser";
 import {auth} from './services/firebase'
 
 function Routes(){

@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 }))
-export default function Header() {
+export default function Header({saldo}) {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -54,7 +54,7 @@ export default function Header() {
                 </Typography>
                 <div className={classes.grow} />
                 <Typography className={classes.saldo} variant="h6" >
-                    Saldo: R$ 100,00
+                    Saldo: R$ {saldo}
                 </Typography>
                 <IconButton
                     size="large"

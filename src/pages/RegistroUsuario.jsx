@@ -12,7 +12,8 @@ import {
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import { createUserWithEmailAndPassword as createUser } from 'firebase/auth'
-import { auth } from '../services/firebase'
+import { collection, addDoc } from '@firebase/firestore';
+import { auth, db } from '../services/firebase'
 
 const urlCapa = '../images/capa-registro.jpg'
 const useStyles = makeStyles((theme) => ({
@@ -38,17 +39,24 @@ export default function SignUp() {
     const classes = useStyles()
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
+    const [nome, setnome] = useState('')
+    const [sobreNome, setsobreNome] = useState('')
+
+    const clienteCollection = collection(db, 'clientes')
 
     let history = useHistory()
     const registro = async () => {
-        history.push('/')
         try {
             const user = await createUser(auth, email, pass)
             console.log(user)
-
+            await addDoc(clienteCollection, { nome: nome, sobrenome: sobreNome, email: email, saldo: 0 })
+            history.push('/')
         } catch (error) {
-            console.log(error.message)
-        }
+            if (error.code === 'auth/email-already-in-use')
+                alert('O e-mail informado já foi utilizado!')
+            else
+                alert(error.message)
+        }        
     }
 
     return (
@@ -76,6 +84,7 @@ export default function SignUp() {
                                     id="nome"
                                     label="Nome"
                                     autoFocus
+                                    onChange={(e) => { setnome(e.target.value) }}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -86,6 +95,7 @@ export default function SignUp() {
                                     label="Sobre Nome"
                                     name="sobreNome"
                                     autoComplete="family-name"
+                                    onChange={(e) => { setsobreNome(e.target.value) }}
                                 />
                             </Grid>
 
@@ -114,7 +124,6 @@ export default function SignUp() {
                             </Grid>
                         </Grid>
                         <Button
-                            type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
