@@ -15,6 +15,7 @@ import { createUserWithEmailAndPassword as createUser } from 'firebase/auth'
 import { collection, addDoc } from '@firebase/firestore';
 import { auth, db } from '../services/firebase'
 
+
 const urlCapa = '../images/capa-registro.jpg'
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,6 +61,7 @@ export default function SignUp() {
         }        
     }
 
+
     return (
         <Box className={classes.root}>
             <Container className={classes.box} maxWidth="xs">
@@ -93,7 +95,7 @@ export default function SignUp() {
                                     required
                                     fullWidth
                                     id="sobreNome"
-                                    label="Sobre Nome"
+                                    label="Sobrenome"
                                     name="sobreNome"
                                     autoComplete="family-name"
                                     onChange={(e) => { setsobreNome(e.target.value) }}
@@ -123,8 +125,23 @@ export default function SignUp() {
                                     onChange={(e) => { setPass(e.target.value) }}
                                 />
                             </Grid>
+
+                            <Grid item xs={12}>
+                            <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+        <label class="form-check-label" for="flexCheckDefault">
+          Li e Aceito o <a href="./">Política de Privacidade</a> e os <a href="./">Termos de Uso</a>
+        </label>
+        
+      </div>
+      
+                            </Grid>
+
                         </Grid>
-                        <Button
+
+                        
+
+                        <Button disabled id="botaoCadastro"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
@@ -144,4 +161,6 @@ export default function SignUp() {
             </Container>
         </Box>
     );
+
+    
 }
