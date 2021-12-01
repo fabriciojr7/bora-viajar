@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
@@ -16,6 +16,9 @@ import {
     Divider
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { db } from '../services/firebase'
+import { collection, getDocs } from "@firebase/firestore";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.primary.light,
@@ -41,17 +44,47 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+
 export default function AccountUser() {
     const classes = useStyles()
     const [tipo, setTipo] = useState(1);
+    const [user, setUser] = useState([])
+
+    const formatarReal = (valor) => valor ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
+
+
+    useEffect(() => {
+        getDocs(collection(db, 'clientes'))
+            .then((snapshot) => {
+                let dados = []
+                snapshot.forEach((snap) => {
+                    dados.push(snap.data())
+                })
+
+                const email = localStorage.getItem('email')
+                const userData = dados.find(user => user.email === email)
+                setUser(userData)
+                
+            })
+            .catch((error) => {
+                alert('Erro ao buscar dados do usuário')
+            })
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps        
+    }, []);
+
 
     const handleChange = (event) => {
         setTipo(event.target.value);
     };
+
     return (
         <>
-            <Header />
+            <Header saldo={formatarReal(user?.saldo)} />
+
             <Box className={classes.root}>
+
+
                 <Container className={classes.box} maxWidth="xs">
 
                     <CssBaseline />
@@ -62,9 +95,9 @@ export default function AccountUser() {
                             alignItems: 'center',
                         }}
                     >
-                        {/* <Typography component="h1" variant="h4">
-                            Cadastro Bora Viajar
-                        </Typography> */}
+                        <Typography component="h1" variant="h4">
+                            Dados do Cliente
+                        </Typography>
                         <Box component="form" noValidate sx={{ mt: 3 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
@@ -74,7 +107,8 @@ export default function AccountUser() {
                                         fullWidth
                                         id="nome"
                                         label="Nome"
-                                        autoFocus
+                                        autoFocus                                
+                                        defaultValue={user && user.nome}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -84,16 +118,19 @@ export default function AccountUser() {
                                         label="Sobrenome"
                                         name="sobreNome"
                                         autoComplete="family-name"
+                                        defaultValue={user && user.sobrenome}
                                     />
                                 </Grid>
 
                                 <Grid item xs={12}>
                                     <TextField
+                                        disabled
                                         fullWidth
                                         id="email"
                                         label="Email"
                                         name="email"
                                         autoComplete="email"
+                                        defaultValue={user && user.email}
                                     //onChange={(e) => { setEmail(e.target.value) }}
                                     />
                                 </Grid>
@@ -124,7 +161,6 @@ export default function AccountUser() {
 
                                 <Grid item xs={12} sm={7}>
                                     <Button
-                                        type="submit"
                                         fullWidth
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}

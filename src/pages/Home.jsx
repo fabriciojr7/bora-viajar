@@ -5,10 +5,11 @@ import Footer from "../components/Footer";
 import Hotel from '../components/Hotel'
 import { Toolbar, Box } from '@mui/material';
 
+
 import api from "../services/api";
 import { db } from '../services/firebase'
 import { collection, getDocs } from "@firebase/firestore";
-
+import BemVindo from "../components/BemVindo";
 const useStyles = makeStyles((theme) => ({
     root: {
         background: theme.palette.primary.light,
@@ -75,6 +76,9 @@ export default function Home() {
 
             <Box className={classes.main}>
 
+            <BemVindo nome={user?.nome} sobrenome={user?.sobrenome} />
+
+
                 {typeof hoteis === 'object' && hoteis.map((hotel, index) => (
                     <Hotel
                         key={index}
@@ -87,6 +91,8 @@ export default function Home() {
                         origin={hotel.origin}
                     />
                 ))}
+
+
             </Box>
             <Toolbar />
             <Footer />

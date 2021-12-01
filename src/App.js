@@ -1,12 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material';
-// import { makeStyles } from '@mui/styles';
 import Routes from './routes';
-// const useStyles = makeStyles({
-//   root: {
-//     background: 'purple',
-//     minHeight: '100vh'
-//   }
-// })
 
 function App() {
   const theme = createTheme({
@@ -26,7 +19,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes/>
-      
+
     </ThemeProvider>
 
   );

@@ -3,7 +3,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import RegistroUsuario from "./pages/RegistroUsuario";
-//  import AccountUser from "./pages/AccountUser";
+ import AccountUser from "./pages/AccountUser";
 import {auth} from './services/firebase'
 
 function Routes(){
@@ -22,7 +22,7 @@ function Routes(){
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/registro' component={RegistroUsuario}/>
-                    {/* <Route exact path='/perfil' component={AccountUser}/>                 */}
+                    <Route exact path='/perfil' component={AccountUser}/>                
                 </Switch>
             </BrowserRouter>
         )

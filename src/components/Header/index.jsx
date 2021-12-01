@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import IconButton from '@mui/material/IconButton';
 import { MdAccountCircle } from "react-icons/md";
-
+import { useHistory } from "react-router-dom";
 import {
     signOut
 } from 'firebase/auth'
@@ -21,11 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
         height: 80,
-    },
-    colorIcon: {
-        color: theme.palette.primary.light
-    },
-
+    }
 
 }))
 export default function Header({saldo}) {
@@ -40,8 +36,10 @@ export default function Header({saldo}) {
         setAnchorEl(null);
     };
 
+    let history = useHistory()
     const logout = async () => {
         await signOut(auth)
+        history.push('/')
     }
 
     return (
@@ -82,9 +80,9 @@ export default function Header({saldo}) {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClose}>
-                        {/* <Link href="/perfil" color="inherit" underline="none"> */}
+                        <Link href="/perfil" color="inherit" underline="none">
                             Informações da conta
-                        {/* </Link> */}
+                        </Link>
                     </MenuItem>
                     <MenuItem onClick={logout}>Sair</MenuItem>
                 </Menu>
