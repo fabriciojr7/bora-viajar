@@ -189,8 +189,8 @@ export default function HotelDetail({
                         <Container maxWidth="sm">
                             <Box className={classes.itemsImovel}>
                                 <Grid container spacing={4} columns={12}>
-                                    {features?.map((feature) => (
-                                        <Grid item xs={6}>
+                                    {features?.map((feature, index) => (
+                                        <Grid item xs={6} key={index}>
                                             {definefeature(feature)}
                                         </Grid>
                                     ))}
