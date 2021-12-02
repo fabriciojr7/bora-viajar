@@ -78,7 +78,7 @@ export default function SignUp() {
     let history = useHistory()
     const registro = async () => {
         try {
-            const user = await createUser(auth, email, pass)
+            await createUser(auth, email, pass)
             await addDoc(clienteCollection, { nome: nome, sobrenome: sobreNome, email: email, saldo: 0 })
             localStorage.setItem('email', email)
             history.push('/')

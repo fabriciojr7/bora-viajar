@@ -11,7 +11,7 @@ import { MdClose } from "react-icons/md";
 import Typography from "@mui/material/Typography";
 
 import { collection, getDocs, updateDoc, doc } from "@firebase/firestore";
-import { auth, db } from "../../services/firebase";
+import { db } from "../../services/firebase";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
