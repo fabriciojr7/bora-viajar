@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '15px',
         padding: '25px',
         boxShadow: '0 0 1em black'
-
+    },
+    logo:{
+        borderRadius: '50%', 
     }
 }))
 
@@ -94,7 +96,7 @@ export default function Login() {
                         }}
                     >
 
-                        <img src={logoLogin} alt="Logo" height={200}/>
+                        <img className={classes.logo} src={logoLogin} alt="Logo" height={200}/>
                         <Box component="form" noValidate sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"

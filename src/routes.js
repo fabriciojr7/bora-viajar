@@ -22,7 +22,7 @@ function Routes(){
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/registro' component={RegistroUsuario}/>
-                    <Route exact path='/perfil' component={AccountUser}/>                
+                    <Route exact path='/perfil' component={AccountUser}/>                        
                 </Switch>
             </BrowserRouter>
         )

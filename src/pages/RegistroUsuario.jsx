@@ -18,6 +18,8 @@ import { createUserWithEmailAndPassword as createUser } from 'firebase/auth'
 import { collection, addDoc } from '@firebase/firestore';
 import { auth, db } from '../services/firebase'
 import MyAlert from '../components/MyAlert';
+import Privacidade from '../components/Privacidade'
+import Termos from '../components/Termos';
 
 const urlCapa = '../images/capa-registro.jpg'
 const useStyles = makeStyles((theme) => ({
@@ -58,9 +60,20 @@ export default function SignUp() {
         setCheck(!e.target.checked)
     }
 
+    const [openedPrivacidade, setOpenedPrivacidade] = useState(false)
+
+    function handlePrivacidade() {
+        setOpenedPrivacidade((prevState) => !prevState)
+    }
+
+    const [openedTermos, setOpenedTermos] = useState(false)
+
+    function handleTermos() {
+        setOpenedTermos((prevState) => !prevState)
+    }
+
     const clienteCollection = collection(db, 'clientes')
 
-    const politica = './privacidade-temos/privacidade.html'
 
     let history = useHistory()
     const registro = async () => {
@@ -159,30 +172,39 @@ export default function SignUp() {
                                     />
                                 </Grid>
 
+                                <Grid item xs={12} >
+                                    <span> Leia as </span>
+                                    <Button size="small"
+                                        component="button"
+                                        underline='hover'
+                                        onClick={handlePrivacidade}
+                                    >
+                                        Política de Privacidade
+                                    </Button>
+                                    <span> e os </span>
 
-                                <Grid item xs={12} sm={5}>
+                                    <Button size="small"
+                                        component="button"
+                                        underline='hover'
+                                        onClick={handleTermos}
+                                    >
+                                        Termos de Uso
+                                    </Button>
+                                    <span> para se proteger. </span>
+                                </Grid>
+
+                                <Grid item xs={12} >
                                     <div class="form-check">
                                         <FormGroup>
-
                                             <FormControlLabel
                                                 control={
                                                     <Checkbox onChange={handleCheck} />
                                                 }
                                                 label="Li e Aceito" />
-
-                                        </FormGroup>                 
-
+                                        </FormGroup>
                                     </div>
-
                                 </Grid>
-                                <Grid item xs={12} sm={7}>
-                                    <a href={politica}  >Política de Privacidade</a> e os <a href="../">Termos de Uso</a>
-                                </Grid>
-
                             </Grid>
-
-
-
                             <Button disabled={check} id="botaoCadastro"
                                 fullWidth
                                 variant="contained"
@@ -202,6 +224,9 @@ export default function SignUp() {
                     </Box>
                 </Container>
             </Container>
+
+            <Privacidade open={openedPrivacidade} onClose={handlePrivacidade} />
+            <Termos open={openedTermos} onClose={handleTermos}/>
         </Box>
     );
 
