@@ -18,6 +18,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { db } from '../services/firebase'
 import { collection, getDocs } from "@firebase/firestore";
+import Transacao from "../components/Transacao";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,6 +51,10 @@ export default function AccountUser() {
     const [tipo, setTipo] = useState(1);
     const [user, setUser] = useState([])
 
+    const [dialogOpened, setDialogOpened] = useState(false)
+    function handleDialog() {
+        setDialogOpened((prevState) => !prevState)
+    }
     const formatarReal = (valor) => valor ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
 
 
@@ -64,7 +69,7 @@ export default function AccountUser() {
                 const email = localStorage.getItem('email')
                 const userData = dados.find(user => user.email === email)
                 setUser(userData)
-                
+
             })
             .catch((error) => {
                 alert('Erro ao buscar dados do usuário')
@@ -107,7 +112,7 @@ export default function AccountUser() {
                                         fullWidth
                                         id="nome"
                                         label="Nome"
-                                        autoFocus                                
+                                        autoFocus
                                         defaultValue={user && user.nome}
                                     />
                                 </Grid>
@@ -164,22 +169,26 @@ export default function AccountUser() {
                                         fullWidth
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}
-                                    // onClick={registro}
+                                        onClick={handleDialog}
                                     >
                                         Adicionar Transação
                                     </Button>
                                 </Grid>
 
                             </Grid>
-
-
                         </Box>
                     </Box>
-
-
-
                 </Container>
             </Box>
+
+            <Transacao
+                open={dialogOpened}
+                onClose={handleDialog}
+                user={user !== undefined && user}
+                type={tipo}
+            />
+
+
             <Footer />
         </>
     )

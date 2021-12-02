@@ -10,6 +10,9 @@ import api from "../services/api";
 import { db } from '../services/firebase'
 import { collection, getDocs } from "@firebase/firestore";
 import BemVindo from "../components/BemVindo";
+import Loading from '../components/Loading'
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         background: theme.palette.primary.light,
@@ -39,7 +42,8 @@ export default function Home() {
     const classes = useStyles()
     const [hoteis, sethoteis] = useState([])
     const [user, setUser] = useState([])
-    const formatarReal = (valor) =>  valor ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
+    const [load, setLoad] = useState(false)
+    const formatarReal = (valor) => valor ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
 
     useEffect(() => {
         getDocs(collection(db, 'clientes'))
@@ -65,35 +69,36 @@ export default function Home() {
         if (user && user.saldo !== undefined && user.saldo !== null) {
             api.get(`/carteira/recomendacao?balance=${user.saldo}`).then(({ data }) => {
                 sethoteis(data.data)
+                setLoad(true)
             }).catch((error) => {
                 alert('Erro ao buscar hoteis')
             })
-        }       
+        }
     }, [user]);
     return (
         <div className={classes.root}>
             <Header saldo={formatarReal(user?.saldo)} />
 
-            <Box className={classes.main}>
-
-            <BemVindo nome={user?.nome} sobrenome={user?.sobrenome} />
-
-
-                {typeof hoteis === 'object' && hoteis.map((hotel, index) => (
-                    <Hotel
-                        key={index}
-                        title={hotel.title}
-                        img={hotel.img}
-                        location={hotel.location}
-                        price={hotel.price}
-                        persons={hotel.persons}
-                        rooms={hotel.rooms}
-                        origin={hotel.origin}
-                    />
-                ))}
+            {load ?
+                <Box className={classes.main}>
+                    <BemVindo nome={user?.nome} sobrenome={user?.sobrenome} />
+                    {typeof hoteis === 'object' && hoteis.map((hotel, index) => (
+                        <Hotel
+                            key={index}
+                            title={hotel.title}
+                            img={hotel.img}
+                            location={hotel.location}
+                            price={hotel.price}
+                            persons={hotel.persons}
+                            rooms={hotel.rooms}
+                            origin={hotel.origin}
+                        />
+                    ))}
 
 
-            </Box>
+                </Box>
+                : <Loading />}
+
             <Toolbar />
             <Footer />
         </div>

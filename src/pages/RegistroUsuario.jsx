@@ -7,14 +7,17 @@ import {
     Grid,
     Box,
     Typography,
-    Container
+    Container,
+    FormGroup,
+    FormControlLabel,
+    Checkbox
 } from '@mui/material';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import { createUserWithEmailAndPassword as createUser } from 'firebase/auth'
 import { collection, addDoc } from '@firebase/firestore';
 import { auth, db } from '../services/firebase'
-
+import MyAlert from '../components/MyAlert';
 
 const urlCapa = '../images/capa-registro.jpg'
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +46,21 @@ export default function SignUp() {
     const [nome, setnome] = useState('')
     const [sobreNome, setsobreNome] = useState('')
 
+    const [alertOpened, setAlertOpened] = useState(false)
+    const [msgAlert, setMsgAlert] = useState('')
+    const [typeAlert, setTypeAlert] = useState('')
+    function handleAlert() {
+        setAlertOpened((prevState) => !prevState)
+    }
+
+    const [check, setCheck] = useState(true)
+    const handleCheck = (e) => {
+        setCheck(!e.target.checked)
+    }
+
     const clienteCollection = collection(db, 'clientes')
+
+    const politica = './privacidade-temos/privacidade.html'
 
     let history = useHistory()
     const registro = async () => {
@@ -54,113 +71,139 @@ export default function SignUp() {
             localStorage.setItem('email', email)
             history.push('/')
         } catch (error) {
-            if (error.code === 'auth/email-already-in-use')
-                alert('O e-mail informado já foi utilizado!')
-            else
-                alert(error.message)
-        }        
+            if (email === '' || pass === '' || nome === '' || sobreNome === '') {
+                setMsgAlert('Todos os dados precisam ser preenchidos')
+                setTypeAlert('error')
+                handleAlert()
+            } else if (error.code === 'auth/email-already-in-use') {
+                setMsgAlert('O e-mail informado já foi utilizado!')
+                setTypeAlert('error')
+                handleAlert()
+            } else {
+                setMsgAlert('Dados invalidos, verifique!')
+                setTypeAlert('error')
+                handleAlert()
+            }
+        }
     }
 
 
     return (
         <Box className={classes.root}>
-            <Container className={classes.box} maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography component="h1" variant="h4">
-                        Cadastro Bora Viajar
-                    </Typography>
-                    <Box component="form" noValidate sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="nome"
-                                    required
-                                    fullWidth
-                                    id="nome"
-                                    label="Nome"
-                                    autoFocus
-                                    onChange={(e) => { setnome(e.target.value) }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="sobreNome"
-                                    label="Sobrenome"
-                                    name="sobreNome"
-                                    autoComplete="family-name"
-                                    onChange={(e) => { setsobreNome(e.target.value) }}
-                                />
+            <Container maxWidth="xs">
+                <MyAlert
+                    open={alertOpened}
+                    onClose={handleAlert}
+                    msg={msgAlert}
+                    type={typeAlert}
+                />
+                <Container className={classes.box} maxWidth="xs">
+                    <CssBaseline />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Typography component="h1" variant="h4">
+                            Cadastro Bora Viajar
+                        </Typography>
+                        <Box component="form" noValidate sx={{ mt: 3 }}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="given-name"
+                                        name="nome"
+                                        required
+                                        fullWidth
+                                        id="nome"
+                                        label="Nome"
+                                        autoFocus
+                                        onChange={(e) => { setnome(e.target.value) }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="sobreNome"
+                                        label="Sobrenome"
+                                        name="sobreNome"
+                                        autoComplete="family-name"
+                                        onChange={(e) => { setsobreNome(e.target.value) }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Seu melhor email"
+                                        name="email"
+                                        autoComplete="email"
+                                        onChange={(e) => { setEmail(e.target.value) }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Informe sua senha"
+                                        type="password"
+                                        id="password"
+                                        autoComplete="new-password"
+                                        onChange={(e) => { setPass(e.target.value) }}
+                                    />
+                                </Grid>
+
+
+                                <Grid item xs={12} sm={5}>
+                                    <div class="form-check">
+                                        <FormGroup>
+
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox onChange={handleCheck} />
+                                                }
+                                                label="Li e Aceito" />
+
+                                        </FormGroup>                 
+
+                                    </div>
+
+                                </Grid>
+                                <Grid item xs={12} sm={7}>
+                                    <a href={politica}  >Política de Privacidade</a> e os <a href="../">Termos de Uso</a>
+                                </Grid>
+
                             </Grid>
 
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Seu melhor email"
-                                    name="email"
-                                    autoComplete="email"
-                                    onChange={(e) => { setEmail(e.target.value) }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Informe sua senha"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                    onChange={(e) => { setPass(e.target.value) }}
-                                />
-                            </Grid>
 
-                            <Grid item xs={12}>
-                            <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-        <label class="form-check-label" for="flexCheckDefault">
-          Li e Aceito o <a href="./">Política de Privacidade</a> e os <a href="./">Termos de Uso</a>
-        </label>
-        
-      </div>
-      
+
+                            <Button disabled={check} id="botaoCadastro"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={registro}
+                            >
+                                Confirmar Cadastro
+                            </Button>
+                            <Grid container >
+                                <Grid item>
+                                    <Link href="/" variant="body2">
+                                        Já possui uma conta? Faça o login
+                                    </Link>
+                                </Grid>
                             </Grid>
-
-                        </Grid>
-
-                        
-
-                        <Button disabled id="botaoCadastro"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            onClick={registro}
-                        >
-                            Confirmar Cadastro
-                        </Button>
-                        <Grid container >
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Já possui uma conta? Faça o login
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
+                </Container>
             </Container>
         </Box>
     );
 
-    
+
 }
