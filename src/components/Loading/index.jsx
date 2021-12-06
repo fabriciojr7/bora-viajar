@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-    CircularProgress,
     Box,
     Typography,
     Toolbar
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
+const aguarde = '../images/raj-aguarde.jpeg'
 
 const useStyles = makeStyles((theme) => ({
     container:{
@@ -37,7 +37,7 @@ export default function Loading() {
     return (
         <div className={classes.container}>
             <Box className={classes.load} sx={{ display: 'flex' }}>
-                <CircularProgress size={150} color="secondary" disableShrink />
+                <img src={aguarde} alt="Logo" height={300}/>
                 <Toolbar />
                 <Typography variant='h2'>
                     Aguarde...

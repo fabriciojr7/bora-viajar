@@ -10,6 +10,7 @@ import { db } from "../services/firebase";
 import { collection, getDocs } from "@firebase/firestore";
 import BemVindo from "../components/BemVindo";
 import Loading from "../components/Loading";
+import SemSaldo from "../components/SemSaldo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,30 +76,41 @@ export default function Home() {
         });
     }
   }, [user]);
+
+
+
   return (
     <div className={classes.root}>
       <Header saldo={formatarReal(user?.saldo)} />
 
-      {load ? (
-        <Box className={classes.main}>
-          <BemVindo nome={user?.nome} sobrenome={user?.sobrenome} />
-          {typeof hoteis === "object" &&
-            hoteis.map((hotel, index) => (
-              <Hotel
-                key={index}
-                title={hotel.title}
-                img={hotel.img}
-                location={hotel.location}
-                price={hotel.price}
-                persons={hotel.persons}
-                rooms={hotel.rooms}
-                origin={hotel.origin}
-              />
-            ))}
-        </Box>
-      ) : (
-        <Loading />
-      )}
+      {
+        load ? (
+          <Box className={classes.main}>
+            <BemVindo nome={user?.nome} sobrenome={user?.sobrenome} />
+            {
+              (user?.saldo > 0) ? (
+                typeof hoteis === "object" &&
+                hoteis.map((hotel, index) => (
+                  <Hotel
+                    key={index}
+                    title={hotel.title}
+                    img={hotel.img}
+                    location={hotel.location}
+                    price={hotel.price}
+                    persons={hotel.persons}
+                    rooms={hotel.rooms}
+                    origin={hotel.origin}
+                  />
+                ))
+              ) : (
+                <SemSaldo/>
+              )
+            }
+          </Box>
+        ) : (
+          <Loading />
+        )
+      }
 
       <Toolbar />
       <Footer />
