@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const aguarde = '../images/raj-aguarde.jpeg'
+const aguarde = '../images/aguarde.jpg'
 
 const useStyles = makeStyles((theme) => ({
     container:{

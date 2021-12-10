@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const semSaldo = '../images/raj-sem-saldo.jpeg'
+const semSaldo = '../images/sem-saldo.jpg'
 
 const useStyles = makeStyles((theme) => ({
     container: {
