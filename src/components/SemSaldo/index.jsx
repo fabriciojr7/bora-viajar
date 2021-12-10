@@ -40,7 +40,7 @@ export default function SemSaldo() {
                     Irmão, você não possui saldo Suficiente!
                 </Typography>
                 <Toolbar />
-                <img src={semSaldo} alt="Logo" height={300} />
+                <img src={semSaldo} alt="Logo" height={300} width={250} />
                 <Toolbar />
                 <Typography variant='h5'>
                     Vá ao seu perfil, e realize um depósito.
